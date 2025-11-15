@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Modern Todo List</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="app-header">
+            <h1 class="app-title"><i class="bi bi-check2-circle"></i> TaskFlow</h1>
+            <p class="app-subtitle">Organize your life, one task at a time</p>
+        </div>
+
+        <div class="main-card">
+            <div class="input-group-custom">
+                <div class="row g-2">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control task-input" id="taskInput" placeholder="What needs to be done?">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select priority-select" id="prioritySelect">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-add w-100" onclick="addTask()">
+                            <i class="bi bi-plus-circle"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activeTasks">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+            </div>
+
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="filterTasks('all')">
+                    <i class="bi bi-list-ul"></i> All
+                </button>
+                <button class="filter-btn" onclick="filterTasks('active')">
+                    <i class="bi bi-circle"></i> Active
+                </button>
+                <button class="filter-btn" onclick="filterTasks('completed')">
+                    <i class="bi bi-check-circle"></i> Completed
+                </button>
+            </div>
+
+            <div class="todo-list" id="todoList">
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <h4>No tasks yet</h4>
+                    <p>Add a task to get started!</p>
+                </div>
+            </div>
+
+            <button class="clear-all-btn" onclick="clearCompleted()">
+                <i class="bi bi-trash"></i> Clear Completed Tasks
+            </button>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script JS -->
+    <script src="script.js"></script>
+</body>
+</html>
