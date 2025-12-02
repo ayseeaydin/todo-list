@@ -1,9 +1,6 @@
-/* ============================
-   TaskFlow - Styles (modular & documented)
-   Keep visual theme (gradients, float shapes) while organizing
-   ============================ */
+/* TaskFlow - Styles  */
 
-/* ---------- Color palette (single source of truth) ---------- */
+/*  Color palette */
 :root{
   --thistle: #cdb4dbff;
   --fairy-tale: #ffc8ddff;
@@ -21,19 +18,30 @@
 }
 
 /* ---------- Reset & base ---------- */
-*{box-sizing:border-box;margin:0;padding:0}
+*{
+   box-sizing:border-box;
+   margin:0;
+   padding:0
+}
+
 html,body,#app{height:100%}
+
 body{
   font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   min-height:100vh;
-  background: linear-gradient(135deg, var(--light-sky-blue) 0%, var(--uranian-blue) 25%, var(--fairy-tale) 50%, var(--carnation-pink) 75%, var(--thistle) 100%);
+  background: linear-gradient(135deg,
+               var(--light-sky-blue) 0%, 
+               var(--uranian-blue) 25%, 
+               var(--fairy-tale) 50%, 
+               var(--carnation-pink) 75%, 
+               var(--thistle) 100%);
   background-size:400% 400%;
   animation: gradientShift 15s ease infinite;
   overflow-x:hidden;
   padding:2rem 1rem;
 }
 
-/* ---------- Animations ---------- */
+/*  Animations  */
 @keyframes gradientShift{
    0%{background-position:0% 50%}
    50%{background-position:100% 50%}
@@ -82,8 +90,8 @@ body{
 }
 
 .shape:nth-child(1){
-   width:80px;
-   height:80px;
+   width:100px;
+   height:100px;
    top:10%;
    left:10%
 }
@@ -97,8 +105,8 @@ body{
 }
 
 .shape:nth-child(3){
-   width:60px;
-   height:60px;
+   width: 80px;;
+   height: 80px;
    top:80%;
    left:20%;
    animation-delay:4s
@@ -112,7 +120,7 @@ body{
    animation-delay:6s
 }
 
-/* ---------- Layout / Card / Header ---------- */
+/*  Layout / Card / Header  */
 .container{
    position:relative;
    z-index:10;
@@ -149,7 +157,7 @@ body{
    animation:fadeInUp .6s ease
 }
 
-/* ---------- Search & inputs (utilities kept) ---------- */
+/*  Search & inputs (utilities kept)  */
 .search-bar{position:relative}
 
 .search-icon{
@@ -185,6 +193,7 @@ body{
 .task-input:focus,.datetime-input:focus,.tag-input:focus,.edit-input:focus{
    border-color:var(--carnation-pink);
    outline:none;
+   box-shadow:0 0 0 .15rem rgba(255,175,204,0.18);
    transform:translateY(-1px)
 }
 
@@ -260,7 +269,7 @@ body{
    left:50%;
    transform:translate(-50%,-50%);
    font-weight:700;
-   color:#333;
+   color:#b6b2b2;
    font-size:.9rem}
 
 /* ---------- Filters / Chips ---------- */
