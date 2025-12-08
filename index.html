@@ -1,219 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>TaskFlow - Modern Todo List (Modular)</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow - Modern Todo List</title>
 
-  <!-- Bootstrap + Icons kept for quick UI primitives -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Project styles  -->
-  <link rel="stylesheet" href="styles.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Floating shapes  -->
-  <div class="floating-shapes" aria-hidden="true">
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-    <div class="shape"></div>
-  </div>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
 
-  <!-- Main container -->
-  <div class="container" id="app">
-    <header class="app-header">
-      <h1 class="app-title"><i class="bi bi-check2-circle" aria-hidden="true"></i> TaskFlow</h1>
-      <p class="app-subtitle">Organize your life, one task at a time</p>
-    </header>
-
-    <main class="main-card" role="main" aria-labelledby="app-title">
-      <!-- Search & Add area grouped for accessibility & responsiveness -->
-      <section id="controls" class="mb-3">
-        <div class="search-bar mb-3">
-          <i class="bi bi-search search-icon" aria-hidden="true"></i>
-          <label for="searchInput" class="visually-hidden">Search tasks</label>
-          <input id="searchInput" class="form-control search-input" type="search" placeholder="Search tasks..." aria-label="Search tasks">
+    <div class="container">
+        <div class="app-header">
+            <h1 class="app-title"><i class="bi bi-check2-circle"></i> TaskFlow</h1>
+            <p class="app-subtitle">Organize your life, one task at a time</p>
         </div>
 
-        <form id="addTaskForm" class="input-group-custom" novalidate>
-          <div class="row g-2">
-            <div class="col-lg-6">
-              <label for="taskInput" class="visually-hidden">Task description</label>
-              <input id="taskInput" class="form-control task-input" type="text" placeholder="What needs to be done?" required aria-label="Task description">
+        <div class="main-card">
+            <div class="input-group-custom">
+                <div class="row g-2">
+                    <div class="col-md-8">
+                        <input type="text" class="form-control task-input" id="taskInput" placeholder="What needs to be done?">
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select priority-select" id="prioritySelect">
+                            <option value="low">Low</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-add w-100" onclick="addTask()">
+                            <i class="bi bi-plus-circle"></i> Add
+                        </button>
+                    </div>
+                </div>
             </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
-              <label for="prioritySelect" class="visually-hidden">Priority</label>
-              <select id="prioritySelect" class="form-select priority-select" aria-label="Select priority">
-                <option value="low">Low</option>
-                <option value="medium" selected>Medium</option>
-                <option value="high">High</option>
-              </select>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalTasks">0</div>
+                    <div class="stat-label">Total Tasks</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="activeTasks">0</div>
+                    <div class="stat-label">Active</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="completedTasks">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
             </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
-              <label for="categorySelect" class="visually-hidden">Category</label>
-              <select id="categorySelect" class="form-select category-select" aria-label="Select category">
-                <option value="personal">Personal</option>
-                <option value="work">Work</option>
-                <option value="shopping">Shopping</option>
-                <option value="health">Health</option>
-                <option value="other">Other</option>
-              </select>
+            <div class="filter-tabs">
+                <button class="filter-btn active" onclick="filterTasks('all')">
+                    <i class="bi bi-list-ul"></i> All
+                </button>
+                <button class="filter-btn" onclick="filterTasks('active')">
+                    <i class="bi bi-circle"></i> Active
+                </button>
+                <button class="filter-btn" onclick="filterTasks('completed')">
+                    <i class="bi bi-check-circle"></i> Completed
+                </button>
             </div>
 
-            <div class="col-lg-2 col-md-4">
-              <button id="addTaskBtn" class="btn btn-add w-100" type="button" aria-label="Add task">
-                <i class="bi bi-plus-circle" aria-hidden="true"></i> Add
-              </button>
+            <div class="todo-list" id="todoList">
+                <div class="empty-state">
+                    <i class="bi bi-inbox"></i>
+                    <h4>No tasks yet</h4>
+                    <p>Add a task to get started!</p>
+                </div>
             </div>
-          </div>
 
-          <div class="row g-2 mt-2">
-            <div class="col-md-6">
-              <label for="dueDateInput" class="visually-hidden">Due date</label>
-              <input id="dueDateInput" class="form-control datetime-input" type="datetime-local" aria-label="Select due date">
-            </div>
-            <div class="col-md-6">
-              <label for="tagInput" class="visually-hidden">Tags</label>
-              <input id="tagInput" class="form-control tag-input" type="text" placeholder="Add tags (comma separated)" aria-label="Add tags separated by commas">
-            </div>
-          </div>
-        </form>
-      </section>
-
-      <!-- Controls: filters, sort, category chips -->
-      <section id="controls2" class="mb-3">
-        <nav class="filter-tabs" role="tablist" aria-label="Task status filters">
-          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
-          <button class="filter-btn" data-filter="active" role="tab" aria-selected="false">Active</button>
-          <button class="filter-btn" data-filter="completed" role="tab" aria-selected="false">Completed</button>
-        </nav>
-
-        <div class="d-flex align-items-center gap-2 my-2">
-          <label for="sortSelect" class="sort-label mb-0">Sort by:</label>
-          <select id="sortSelect" class="form-select sort-select" aria-label="Sort tasks">
-            <option value="date-desc">Date (Newest)</option>
-            <option value="date-asc">Date (Oldest)</option>
-            <option value="priority">Priority</option>
-            <option value="alphabetical">Alphabetical</option>
-            <option value="duedate">Due Date</option>
-            <option value="category">Category</option>
-          </select>
+            <button class="clear-all-btn" onclick="clearCompleted()">
+                <i class="bi bi-trash"></i> Clear Completed Tasks
+            </button>
         </div>
+    </div>
 
-        <nav class="category-filter" aria-label="Category filters">
-          <button class="category-chip active" data-category="all" aria-pressed="true">All</button>
-          <button class="category-chip" data-category="personal" aria-pressed="false">Personal</button>
-          <button class="category-chip" data-category="work" aria-pressed="false">Work</button>
-          <button class="category-chip" data-category="shopping" aria-pressed="false">Shopping</button>
-          <button class="category-chip" data-category="health" aria-pressed="false">Health</button>
-          <button class="category-chip" data-category="other" aria-pressed="false">Other</button>
-        </nav>
-      </section>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-      <!-- Stats row  -->
-      <section class="statistics-section mb-3" aria-label="Task statistics">
-        <div class="stats-bar" id="statsBar">
-          <article class="stat-item">
-            <div class="stat-number" id="totalTasks" aria-live="polite">0</div>
-            <div class="stat-label">Total</div>
-          </article>
-          <article class="stat-item">
-            <div class="stat-number" id="activeTasks" aria-live="polite">0</div>
-            <div class="stat-label">Active</div>
-          </article>
-          <article class="stat-item">
-            <div class="stat-number" id="completedTasks" aria-live="polite">0</div>
-            <div class="stat-label">Completed</div>
-          </article>
-          <article class="stat-item">
-            <div class="stat-number" id="completionRate" aria-live="polite">0%</div>
-            <div class="stat-label">Completion</div>
-          </article>
-        </div>
-        <div class="progress-container mb-3" role="progressbar" aria-label="Task completion progress" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-bar-custom" id="progressBar" style="width: 0%"></div>
-          <span class="progress-text" id="progressText">0%</span>
-        </div>
-      </section>
-
-      <!-- Task list -->
-      <section class="todo-list-section" aria-label="Task list">
-        <ul id="todoList" class="todo-list" role="list" aria-live="polite" aria-relevant="additions removals">
-          <li class="empty-state" role="status">
-            <i class="bi bi-inbox" aria-hidden="true"></i>
-            <h2>No tasks yet</h2>
-            <p>Add a task to get started!</p>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Action buttons: export/import/clear -->
-      <section class="actions-section mt-3">
-        <button id="clearCompletedBtn" class="clear-all-btn" aria-label="Clear all completed tasks">
-          <i class="bi bi-trash" aria-hidden="true"></i> Clear Completed Tasks
-        </button>
-
-        <div class="action-buttons mt-3">
-          <button id="exportBtn" class="btn-action" aria-label="Export tasks to JSON file">
-            <i class="bi bi-download"></i> Export
-          </button>
-          <button id="importBtn" class="btn-action" aria-label="Import tasks from JSON file">
-            <i class="bi bi-upload"></i> Import
-          </button>
-          <input id="importFileInput" type="file" accept=".json" style="display:none" aria-hidden="true">
-        </div>
-      </section>
-    </main>
-
-    <!-- Modal-like stats aside -->
-    <aside id="statsModal" class="stats-modal" role="dialog" aria-modal="true" aria-hidden="true">
-      <div class="stats-modal-content">
-        <header class="stats-modal-header">
-          <h3 id="statsModalTitle">Statistics</h3>
-          <button id="closeStatsModal" class="close-modal" aria-label="Close statistics modal">&times;</button>
-        </header>
-        <div class="stats-modal-body">
-          <article class="stat-card">
-            <h4>Today</h4>
-            <p class="stat-value" id="todayCompleted">0</p>
-            <p class="stat-desc">Tasks Completed</p>
-          </article>
-          <article class="stat-card">
-            <h4>This Week</h4>
-            <p class="stat-value" id="weekCompleted">0</p>
-            <p class="stat-desc">Tasks Completed</p>
-          </article>
-          <article class="stat-card">
-            <h4>This Month</h4>
-            <p class="stat-value" id="monthCompleted">0</p>
-            <p class="stat-desc">Tasks Completed</p>
-          </article>
-        </div>
-      </div>
-    </aside>
-
-    <button id="floatingStatsBtn" class="floating-stats-btn" aria-label="Open detailed statistics">
-      <i class="bi bi-graph-up" aria-hidden="true"></i>
-    </button>
-
-    <aside id="undoNotification" class="undo-notification" role="status" aria-live="assertive" aria-atomic="true">
-      <span id="undoMessage">Task deleted</span>
-      <button id="undoBtn" class="undo-btn" aria-label="Undo last deletion">Undo</button>
-    </aside>
-
-    <!-- Canvas for confetti -->
-    <canvas id="confettiCanvas" aria-hidden="true"></canvas>
-  </div>
-
-  <!-- Module scripts: modular JS architecture, each file has single responsibility -->
-  <script type="module" src="js/storage.js"></script>
-  <script type="module" src="js/taskModel.js"></script>
-  <script type="module" src="js/notifications.js"></script>
-  <script type="module" src="js/ui.js"></script>
-  <script type="module" src="js/main.js"></script>
+    <!-- Script JS -->
+    <script src="script.js"></script>
 </body>
 </html>
